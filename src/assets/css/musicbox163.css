@@ -1,0 +1,391 @@
+* {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+:root {
+  --laser: conic-gradient(#fff, #adadad 10%, #d4d4d4 17%, #ffffff 29%, #b1ff85, #84ffd5, #80edff, #86b2ff, #d48cff, #ff92ce, #ff6269, #ffb263, #FEAC00, #FFCC00 35%, #ffffff 40%, #b5b5b5 45%, #ababab 48%, #eee 60%, #fff 68%, #cacaca 81%, #b1ff85, #84ffd5, #80edff, #86b2ff, #d691ff, #ff92ce, #ff6269, #ffb263, #FEAC00 85%, #fff 88%, #eee 90%, #ddd 92%, #fff)
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #000;
+}
+
+body {
+  -webkit-overflow-scrolling: touch;
+  -webkit-font-smoothing: antialiased;
+  font: 12px/1.5 Microsoft YaHei, tahoma, arial, Hiragino Sans GB, \\5b8b\4f53, sans-serif;
+  color: #666;
+}
+
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+code,
+form,
+fieldset,
+legend,
+input,
+textarea,
+p,
+blockquote,
+th,
+td,
+hr,
+button,
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section,
+sumary {
+  margin: 0;
+  padding: 0;
+}
+
+input,
+select,
+textarea {
+  border: 0;
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  border-radius: 0;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+img,
+a {
+  -webkit-touch-callout: none;
+}
+
+a,
+a:active,
+a:hover {
+  text-decoration: none;
+}
+
+a,
+button,
+input,
+textarea {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+p {
+  text-align: justify;
+  text-justify: inter-ideograph;
+}
+
+:focus {
+  outline: 0;
+}
+
+
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  background-color: rgba(0, 0, 0, .2);
+}
+
+
+
+.author {
+  position: absolute;
+  right: 30px;
+  bottom: 30px;
+  color: rgba(255, 255, 255, .2);
+  text-align: right;
+  z-index: 999;
+  font-size: 10px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .2);
+  transition: color 1s
+}
+
+.author:hover {
+  color: rgba(255, 255, 255, .5);
+  transition: color .6s
+}
+
+.blurCoverBack {
+  background-size: 120% auto;
+  background-position: center;
+  position: fixed;
+  width: 120vw;
+  height: 120vh;
+  top: -10vh;
+  left: -10vw;
+  z-index: 1;
+  filter: blur(20px);
+  opacity: .7;
+  transition: opacity .3s ease-in-out;
+}
+
+.cdBox {
+  transform: translateY(-1800px);
+  position: fixed;
+  top: -300px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.songInfo {
+  position: absolute;
+  bottom: 160px;
+  text-align: center;
+  left: 0;
+  right: 0;
+  font-size: 20px;
+  z-index: 999;
+  color: #fff;
+  text-shadow: -1px -1px 3px rgba(0, 0, 0, .3);
+}
+
+.songInfo span {
+  font-size: 80%;
+  display: inline-block;
+  margin: 0 20px;
+  color: #ddd
+}
+
+.vinylBack,
+.vinylStyle .cdShadow {
+  background-size: 800px auto;
+  width: 800px;
+  height: 800px;
+  position: absolute;
+}
+
+.vinylBack {
+  border-radius: 50%;
+  background: #000;
+  mask: radial-gradient(transparent, transparent 16px, #000 19px);
+}
+
+.vinylStyle .cd {
+
+
+  /* background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='800' height='800'%3e %3cpath  fill='#0e0e0e' d='M569.05 37.48C368.83-55.9 130.85 30.74 37.48 230.95c-93.37 200.23-6.74 438.22 193.47 531.58 200.22 93.36 438.2 6.74 531.57-193.47 93.37-200.22 6.74-438.22-193.47-531.58zM400 600.5c-110.73 0-200.5-89.76-200.5-200.5 0-110.73 89.77-200.5 200.5-200.5S600.5 289.27 600.5 400c0 110.74-89.77 200.5-200.5 200.5z'/%3e %3cpath opacity='.06' fill='none' stroke='%23C9C9C9' stroke-width='.5' stroke-miterlimit='10' d='M798 394.02c0 220.91-179.09 400-400 400-218.7 0-396-177.3-396-396C2 181.5 177.52 5.98 394.04 5.98c214.35 0 388.12 173.77 388.12 388.12 0 212.2-172.03 384.24-384.24 384.24-210.08 0-380.4-170.31-380.4-380.4 0-207.98 168.61-376.59 376.6-376.59 205.9 0 372.82 166.92 372.82 372.83 0 203.84-165.25 369.1-369.1 369.1-201.8 0-365.4-163.6-365.4-365.41 0-199.8 161.96-361.76 361.75-361.76 197.8 0 358.14 160.35 358.14 358.14 0 195.81-158.74 354.55-354.56 354.55-193.85 0-351-157.15-351-351 0-191.92 155.57-347.5 347.5-347.5 190 0 344.02 154.02 344.02 344.02 0 188.1-152.49 340.58-340.59 340.58-186.21 0-337.17-150.96-337.17-337.17 0-184.36 149.45-333.8 333.8-333.8 182.51 0 330.47 147.95 330.47 330.46 0 180.68-146.48 327.16-327.16 327.16-178.88 0-323.9-145.01-323.9-323.9 0-177.08 143.57-320.64 320.66-320.64 175.32 0 317.44 142.12 317.44 317.44 0 173.57-140.7 314.27-314.27 314.27-171.83 0-311.13-139.3-311.13-311.13 0-170.1 137.9-308.01 308.02-308.01 168.41 0 304.94 136.52 304.94 304.93 0 166.73-135.16 301.9-301.89 301.9-165.06 0-298.87-133.82-298.87-298.88 0-163.4 132.47-295.88 295.88-295.88 161.78 0 292.92 131.15 292.92 292.93 0 160.15-129.83 289.99-289.99 289.99-158.56 0-287.09-128.54-287.09-287.1 0-156.97 127.25-284.22 284.22-284.22 155.4 0 281.38 125.98 281.38 281.38 0 153.85-124.72 278.57-278.57 278.57-152.3 0-275.77-123.47-275.77-275.78 0-150.79 122.23-273.02 273.02-273.02 149.27 0 270.29 121.01 270.29 270.29 0 147.78-119.8 267.59-267.59 267.59-146.3 0-264.91-118.6-264.91-264.92 0-144.84 117.42-262.26 262.26-262.26 143.4 0 259.64 116.24 259.64 259.64 0 141.96-115.08 257.05-257.04 257.05-140.55 0-254.48-113.94-254.48-254.48 0-139.14 112.8-251.93 251.93-251.93 137.75 0 249.41 111.67 249.41 249.41 0 136.37-110.55 246.92-246.91 246.92-135 0-244.45-109.45-244.45-244.45 0-133.65 108.35-242 242-242 132.32 0 239.58 107.26 239.58 239.58 0 131-106.19 237.19-237.18 237.19-129.69 0-234.82-105.13-234.82-234.82 0-128.39 104.08-232.46 232.47-232.46 127.1 0 230.14 103.03 230.14 230.14 0 125.83-102 227.84-227.84 227.84-124.57 0-225.56-100.99-225.56-225.56 0-123.33 99.98-223.31 223.3-223.31 122.1 0 221.08 98.98 221.08 221.07 0 120.88-97.99 218.86-218.87 218.86-119.66 0-216.67-97-216.67-216.67 0-118.47 96.04-214.5 214.5-214.5 117.3 0 212.37 95.07 212.37 212.36 0 116.1-94.13 210.23-210.24 210.23-114.95 0-208.13-93.18-208.13-208.13 0-113.8 92.25-206.06 206.05-206.06 112.66 0 204 91.33 204 204 0 111.53-90.42 201.95-201.96 201.95-110.42 0-199.93-89.51-199.93-199.94'/%3e %3cpath opacity='0.5' fill='none' stroke='black' stroke-miterlimit='10' d='M795 394.1c0 218.13-176.84 394.97-394.98 394.97C184.07 789.07 9 614 9 398.04c0-213.8 173.32-387.1 387.12-387.1 211.65 0 383.24 171.57 383.24 383.23 0 209.55-169.87 379.41-379.41 379.41-207.45 0-375.62-168.16-375.62-375.61 0-205.38 166.49-371.86 371.86-371.86 203.32 0 368.14 164.82 368.14 368.14 0 201.29-163.17 364.46-364.46 364.46-199.27 0-360.81-161.54-360.81-360.82 0-197.28 159.92-357.2 357.2-357.2 195.31 0 353.64 158.33 353.64 353.63 0 193.36-156.74 350.1-350.1 350.1-191.42 0-346.6-155.17-346.6-346.6 0-189.5 153.63-343.13 343.13-343.13 187.62 0 339.7 152.09 339.7 339.7 0 185.74-150.56 336.3-336.3 336.3-183.88 0-332.94-149.06-332.94-332.93 0-182.04 147.57-329.62 329.61-329.62 180.22 0 326.32 146.1 326.32 326.32 0 178.42-144.64 323.05-323.06 323.05-176.63 0-319.82-143.19-319.82-319.82 0-174.87 141.76-316.62 316.63-316.62 173.11 0 313.45 140.34 313.45 313.46 0 171.38-138.93 310.32-310.32 310.32-169.67 0-307.22-137.55-307.22-307.22 0-167.98 136.17-304.15 304.15-304.15 166.3 0 301.1 134.81 301.1 301.1 0 164.64-133.46 298.1-298.1 298.1-162.98 0-295.1-132.13-295.1-295.11 0-161.36 130.8-292.17 292.16-292.17 159.74 0 289.24 129.5 289.24 289.25 0 158.14-128.2 286.34-286.35 286.34-156.57 0-283.49-126.92-283.49-283.48 0-155 125.65-280.65 280.65-280.65 153.45 0 277.85 124.4 277.85 277.84 0 151.92-123.15 275.07-275.07 275.07-150.4 0-272.31-121.92-272.31-272.32 0-148.89 120.7-269.59 269.59-269.59 147.4 0 266.9 119.5 266.9 266.9 0 145.93-118.3 264.22-264.23 264.22-144.47 0-261.59-117.11-261.59-261.58 0-143.02 115.95-258.97 258.97-258.97 141.6 0 256.38 114.79 256.38 256.38 0 140.18-113.63 253.82-253.81 253.82-138.78 0-251.28-112.5-251.28-251.28 0-137.4 111.38-248.77 248.77-248.77 136.01 0 246.27 110.26 246.27 246.28 0 134.66-109.16 243.81-243.81 243.81-133.31 0-241.38-108.06-241.38-241.37 0-131.98 106.99-238.96 238.96-238.96 130.66 0 236.58 105.91 236.58 236.57 0 129.35-104.86 234.2-234.21 234.2-128.06 0-231.86-103.8-231.86-231.86 0-126.77 102.77-229.54 229.54-229.54 125.5 0 227.25 101.74 227.25 227.25 0 124.25-100.72 224.98-224.98 224.98-123 0-222.72-99.72-222.72-222.73 0-121.78 98.72-220.5 220.5-220.5 120.56 0 218.3 97.73 218.3 218.3 0 119.35-96.76 216.1-216.12 216.1-118.16 0-213.95-95.78-213.95-213.95 0-116.98 94.83-211.81 211.81-211.81 115.81 0 209.7 93.88 209.7 209.7 0 114.65-92.95 207.6-207.6 207.6-113.5 0-205.52-92.02-205.52-205.53 0-112.37 91.1-203.47 203.46-203.47'/%3e %3c/svg%3e"); */
+  width: 440px;
+  height: 440px;
+  min-width: 440px;
+  max-width: 440px;
+  box-sizing: border-box;
+  border: 40px solid rgba(0, 0, 0, .3);
+  -webkit-mask: radial-gradient(transparent, transparent 16px, #000 19px);
+
+}
+
+.vinylStyle .cdLlight {
+  width: 800px;
+  height: 800px;
+  min-width: 800px;
+}
+
+.vinylStyle .cd,
+.vinylStyle .cdLlight {
+  -webkit-mask: radial-gradient(transparent, transparent 16px, #000 19px);
+  mask: radial-gradient(transparent, transparent 16px, #000 19px);
+  /*  -webkit-mask: radial-gradient(transparent, transparent 17px, rgba(255, 255, 255, .4) 19px, #000 19px);
+ mask: radial-gradient(transparent 17px, rgba(255, 255, 255, .4) 19px, #000 19px); */
+  z-index: 1;
+}
+
+.vinylStyle .cdLlight {
+  box-shadow: none;
+  /* background:linear-gradient(115deg, rgba(0, 0, 0,.7) 40%, transparent 50%, rgba(0, 0, 0, .7) 60%) no-repeat, repeating-radial-gradient(#000, rgba(255,255,255,.4) 2px, #000 3px); */
+  background: linear-gradient(115deg, rgba(0, 0, 0, .6) 40%, transparent 50%, rgba(0, 0, 0, .6) 60%), linear-gradient(115deg, rgba(0, 0, 0, 0.4) 40%, transparent 50%, rgba(0, 0, 0, .4) 60%), repeating-radial-gradient(#000, rgba(200, 200, 200, .3) 1px, #000 3px), repeating-radial-gradient(#000, rgba(255, 255, 255, .1) 4px, #000 5px);
+  background-size: 100% 100%, 100% 100%;
+
+  /*  animation: sim_trick_roll linear 6s infinite .8s; */
+
+  /* background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='800' height='800'%3e %3cpath opacity='.3' fill='black' d='M400 150c-138.07 0-250 111.93-250 250s111.93 250 250 250 250-111.93 250-250-111.93-250-250-250zm0 450c-110.46 0-200-89.54-200-200s89.54-200 200-200 200 89.54 200 200-89.54 200-200 200z'/%3e %3clinearGradient id='a' gradientUnits='userSpaceOnUse' x1='97.78' y1='380.1' x2='497.41' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.24'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.24'/%3e %3c/linearGradient%3e %3clinearGradient id='b' gradientUnits='userSpaceOnUse' x1='92.99' y1='380.1' x2='502.21' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.25'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.25'/%3e %3c/linearGradient%3e %3clinearGradient id='c' gradientUnits='userSpaceOnUse' x1='88.2' y1='380.1' x2='506.99' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.25'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.25'/%3e %3c/linearGradient%3e %3clinearGradient id='d' gradientUnits='userSpaceOnUse' x1='83.41' y1='380.1' x2='511.79' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.26'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.26'/%3e %3c/linearGradient%3e %3clinearGradient id='e' gradientUnits='userSpaceOnUse' x1='78.62' y1='380.1' x2='516.58' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.27'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.27'/%3e %3c/linearGradient%3e %3clinearGradient id='f' gradientUnits='userSpaceOnUse' x1='73.83' y1='380.1' x2='521.37' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.27'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.27'/%3e %3c/linearGradient%3e %3clinearGradient id='g' gradientUnits='userSpaceOnUse' x1='69.04' y1='380.1' x2='526.16' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.28'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.28'/%3e %3c/linearGradient%3e %3clinearGradient id='h' gradientUnits='userSpaceOnUse' x1='64.25' y1='380.1' x2='530.95' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.28'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.28'/%3e %3c/linearGradient%3e %3clinearGradient id='i' gradientUnits='userSpaceOnUse' x1='59.46' y1='380.1' x2='535.74' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.29'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.29'/%3e %3c/linearGradient%3e %3clinearGradient id='j' gradientUnits='userSpaceOnUse' x1='54.67' y1='380.1' x2='540.53' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.3'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.3'/%3e %3c/linearGradient%3e %3clinearGradient id='k' gradientUnits='userSpaceOnUse' x1='49.88' y1='380.1' x2='545.32' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.3'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.3'/%3e %3c/linearGradient%3e %3clinearGradient id='l' gradientUnits='userSpaceOnUse' x1='45.09' y1='380.1' x2='550.11' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.31'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.31'/%3e %3c/linearGradient%3e %3clinearGradient id='m' gradientUnits='userSpaceOnUse' x1='40.3' y1='380.1' x2='554.9' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.31'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.31'/%3e %3c/linearGradient%3e %3clinearGradient id='n' gradientUnits='userSpaceOnUse' x1='35.51' y1='380.1' x2='559.69' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.32'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.32'/%3e %3c/linearGradient%3e %3clinearGradient id='o' gradientUnits='userSpaceOnUse' x1='30.72' y1='380.1' x2='564.48' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.33'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.33'/%3e %3c/linearGradient%3e %3clinearGradient id='p' gradientUnits='userSpaceOnUse' x1='25.93' y1='380.1' x2='569.27' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.33'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.33'/%3e %3c/linearGradient%3e %3clinearGradient id='q' gradientUnits='userSpaceOnUse' x1='21.14' y1='380.1' x2='574.06' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.34'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.34'/%3e %3c/linearGradient%3e %3clinearGradient id='r' gradientUnits='userSpaceOnUse' x1='16.35' y1='380.1' x2='578.85' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.35'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.35'/%3e %3c/linearGradient%3e %3clinearGradient id='s' gradientUnits='userSpaceOnUse' x1='11.56' y1='380.1' x2='583.64' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.35'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.35'/%3e %3c/linearGradient%3e %3clinearGradient id='t' gradientUnits='userSpaceOnUse' x1='6.77' y1='380.1' x2='588.43' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.36'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.36'/%3e %3c/linearGradient%3e %3clinearGradient id='u' gradientUnits='userSpaceOnUse' x1='1.98' y1='380.1' x2='593.22' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.36'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.36'/%3e %3c/linearGradient%3e %3clinearGradient id='v' gradientUnits='userSpaceOnUse' x1='-2.81' y1='380.1' x2='598.01' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.37'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.37'/%3e %3c/linearGradient%3e %3clinearGradient id='w' gradientUnits='userSpaceOnUse' x1='-7.6' y1='380.1' x2='602.8' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.38'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.38'/%3e %3c/linearGradient%3e %3clinearGradient id='x' gradientUnits='userSpaceOnUse' x1='-12.39' y1='380.1' x2='607.59' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.38'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.38'/%3e %3c/linearGradient%3e %3clinearGradient id='y' gradientUnits='userSpaceOnUse' x1='-17.18' y1='380.1' x2='612.38' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.39'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.39'/%3e %3c/linearGradient%3e %3clinearGradient id='z' gradientUnits='userSpaceOnUse' x1='-21.97' y1='380.1' x2='617.17' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.4'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.4'/%3e %3c/linearGradient%3e %3clinearGradient id='A' gradientUnits='userSpaceOnUse' x1='-26.76' y1='380.1' x2='621.96' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.4'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.4'/%3e %3c/linearGradient%3e %3clinearGradient id='B' gradientUnits='userSpaceOnUse' x1='-31.55' y1='380.1' x2='626.75' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.41'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.41'/%3e %3c/linearGradient%3e %3clinearGradient id='C' gradientUnits='userSpaceOnUse' x1='-36.34' y1='380.1' x2='631.54' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.41'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.41'/%3e %3c/linearGradient%3e %3clinearGradient id='D' gradientUnits='userSpaceOnUse' x1='-41.13' y1='380.1' x2='636.33' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.42'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.42'/%3e %3c/linearGradient%3e %3clinearGradient id='E' gradientUnits='userSpaceOnUse' x1='-45.92' y1='380.1' x2='641.12' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.43'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.43'/%3e %3c/linearGradient%3e %3clinearGradient id='F' gradientUnits='userSpaceOnUse' x1='-50.71' y1='380.1' x2='645.91' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.43'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.43'/%3e %3c/linearGradient%3e %3clinearGradient id='G' gradientUnits='userSpaceOnUse' x1='-55.5' y1='380.1' x2='650.7' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.44'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.44'/%3e %3c/linearGradient%3e %3clinearGradient id='H' gradientUnits='userSpaceOnUse' x1='-60.29' y1='380.1' x2='655.49' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.44'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.44'/%3e %3c/linearGradient%3e %3clinearGradient id='I' gradientUnits='userSpaceOnUse' x1='-65.08' y1='380.1' x2='660.28' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.45'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.45'/%3e %3c/linearGradient%3e %3clinearGradient id='J' gradientUnits='userSpaceOnUse' x1='-69.87' y1='380.1' x2='665.07' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.46'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.46'/%3e %3c/linearGradient%3e %3clinearGradient id='K' gradientUnits='userSpaceOnUse' x1='-74.66' y1='380.1' x2='669.86' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.46'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.46'/%3e %3c/linearGradient%3e %3clinearGradient id='L' gradientUnits='userSpaceOnUse' x1='-79.45' y1='380.1' x2='674.65' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.47'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.47'/%3e %3c/linearGradient%3e %3clinearGradient id='M' gradientUnits='userSpaceOnUse' x1='-84.24' y1='380.1' x2='679.44' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.48'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.48'/%3e %3c/linearGradient%3e %3clinearGradient id='N' gradientUnits='userSpaceOnUse' x1='-89.03' y1='380.1' x2='684.23' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.48'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.48'/%3e %3c/linearGradient%3e %3clinearGradient id='O' gradientUnits='userSpaceOnUse' x1='-93.82' y1='380.1' x2='689.02' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.49'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.49'/%3e %3c/linearGradient%3e %3clinearGradient id='P' gradientUnits='userSpaceOnUse' x1='-98.61' y1='380.1' x2='693.81' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.49'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.49'/%3e %3c/linearGradient%3e %3clinearGradient id='Q' gradientUnits='userSpaceOnUse' x1='-103.4' y1='380.1' x2='698.6' y2='380.1' gradientTransform='matrix(1 0 0 -1 102.4 780.1)'%3e %3cstop offset='0' stop-color='white' stop-opacity='.5'/%3e %3cstop offset='.02' stop-color='white' stop-opacity='0'/%3e %3cstop offset='.98' stop-color='white' stop-opacity='0'/%3e %3cstop offset='1' stop-color='white' stop-opacity='.5'/%3e %3c/linearGradient%3e %3cg fill='none' stroke-width='1'%3e %3ccircle stroke='url(%23a)' cx='400' cy='400' r='198.81'/%3e%3ccircle stroke='url(%23b)' cx='400' cy='400' r='203.6'/%3e%3ccircle stroke='url(%23c)' cx='400' cy='400' r='208.4'/%3e%3ccircle stroke='url(%23d)' cx='400' cy='400' r='213.19'/%3e%3ccircle stroke='url(%23e)' cx='400' cy='400' r='217.98'/%3e%3ccircle stroke='url(%23f)' cx='400' cy='400' r='222.77'/%3e%3ccircle stroke='url(%23g)' cx='400' cy='400' r='227.56'/%3e%3ccircle stroke='url(%23h)' cx='400' cy='400' r='232.35'/%3e%3ccircle stroke='url(%23i)' cx='400' cy='400' r='237.14'/%3e%3ccircle stroke='url(%23j)' cx='400' cy='400' r='241.93'/%3e%3ccircle stroke='url(%23k)' cx='400' cy='400' r='246.72'/%3e%3ccircle stroke='url(%23l)' cx='400' cy='400' r='251.51'/%3e%3ccircle stroke='url(%23m)' cx='400' cy='400' r='256.3'/%3e%3ccircle stroke='url(%23n)' cx='400' cy='400' r='261.09'/%3e%3ccircle stroke='url(%23o)' cx='400' cy='400' r='265.88'/%3e%3ccircle stroke='url(%23p)' cx='400' cy='400' r='270.67'/%3e%3ccircle stroke='url(%23q)' cx='400' cy='400' r='275.46'/%3e%3ccircle stroke='url(%23r)' cx='400' cy='400' r='280.25'/%3e%3ccircle stroke='url(%23s)' cx='400' cy='400' r='285.04'/%3e%3ccircle stroke='url(%23t)' cx='400' cy='400' r='289.83'/%3e%3ccircle stroke='url(%23u)' cx='400' cy='400' r='294.62'/%3e%3ccircle stroke='url(%23v)' cx='400' cy='400' r='299.41'/%3e%3ccircle stroke='url(%23w)' cx='400' cy='400' r='304.2'/%3e%3ccircle stroke='url(%23x)' cx='400' cy='400' r='308.99'/%3e%3ccircle stroke='url(%23y)' cx='400' cy='400' r='313.78'/%3e%3ccircle stroke='url(%23z)' cx='400' cy='400' r='318.57'/%3e%3ccircle stroke='url(%23A)' cx='400' cy='400' r='323.36'/%3e%3ccircle stroke='url(%23B)' cx='400' cy='400' r='328.15'/%3e%3ccircle stroke='url(%23C)' cx='400' cy='400' r='332.94'/%3e%3ccircle stroke='url(%23D)' cx='400' cy='400' r='337.73'/%3e%3ccircle stroke='url(%23E)' cx='400' cy='400' r='342.52'/%3e%3ccircle stroke='url(%23F)' cx='400' cy='400' r='347.31'/%3e%3ccircle stroke='url(%23G)' cx='400' cy='400' r='352.1'/%3e%3ccircle stroke='url(%23H)' cx='400' cy='400' r='356.89'/%3e%3ccircle stroke='url(%23I)' cx='400' cy='400' r='361.68'/%3e%3ccircle stroke='url(%23J)' cx='400' cy='400' r='366.47'/%3e%3ccircle stroke='url(%23K)' cx='400' cy='400' r='371.26'/%3e%3ccircle stroke='url(%23L)' cx='400' cy='400' r='376.05'/%3e%3ccircle stroke='url(%23M)' cx='400' cy='400' r='380.84'/%3e%3ccircle stroke='url(%23N)' cx='400' cy='400' r='385.63'/%3e%3ccircle stroke='url(%23O)' cx='400' cy='400' r='390.42'/%3e%3ccircle stroke='url(%23P)' cx='400' cy='400' r='395.21'/%3e%3ccircle stroke='url(%23Q)' cx='400' cy='400' r='400'/%3e %3c/g%3e %3c/svg%3e") center center no-repeat;background-size: 100%; transform: rotate(115deg); */
+}
+
+.cdStyle .cd {
+  padding: 3px;
+  mask: radial-gradient(transparent 80px, rgba(255, 255, 255, .4) 81px, #000 82px);
+}
+
+.vinylStyle .cdBox::after {
+  border: none;
+  width: 34px;
+  height: 34px;
+  box-shadow: -2px 0px 15px rgba(0, 0, 0, .3) inset, -1px 0 0 rgba(255, 255, 255, .25), 0 0 0 rgba(255, 255, 255, .3) inset
+}
+
+.vinylStyle .cdShadow {
+  background-image: none;
+  box-shadow: -2px -1px 20px rgba(0, 0, 0, .8);
+}
+
+.cdBox::after {
+  content: '';
+  width: 72px;
+  height: 72px;
+  border-radius: 500px;
+  -webkit-box-shadow: 0 0 20px rgba(0, 0, 0, .5) inset;
+  box-shadow: -2px 1px 15px rgba(0, 0, 0, .3) inset, -1px 0px 0px rgba(255, 255, 255, .25), 1px 0px 0px rgba(255, 255, 255, .3) inset;
+  position: absolute;
+  border: 35px solid rgba(255, 255, 255, .1);
+  z-index: 4;
+}
+
+.blurCoverBack.loaded {
+  opacity: 0;
+  transition: opacity .3s ease-in-out;
+}
+
+.cdSlideIn {
+  animation: slideDown ease-in-out .6s forwards;
+}
+
+.cd {
+  width: 500px;
+  min-width: 500px;
+  height: 500px;
+  border-radius: 500px;
+  position: absolute;
+  animation: roll linear 6s infinite 1s;
+  z-index: 99
+}
+
+.cdSlideIn .cd {
+  animation: roll linear 6s infinite .8s;
+}
+
+.cdLlight {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 500px;
+  -webkit-mask: radial-gradient(transparent, transparent 35px, rgba(255, 255, 255, .4) 37px, #000 37px);
+  mask: radial-gradient(transparent 35px, rgba(255, 255, 255, .4) 37px, #000 37px);
+  box-shadow: 0 0 1px rgba(255, 255, 255, .2) inset;
+  background: -moz-linear-gradient(-25deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0) 100%);
+  background: -webkit-linear-gradient(-25deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0) 100%);
+  z-index: 2;
+}
+
+.cdShadow {
+  background: var(--laser);
+  width: 500px;
+  height: 500px;
+  border-radius: 500px;
+  position: fixed;
+  animation: roll linear 30s infinite reverse;
+  mask: radial-gradient(transparent 70px, rgba(255, 255, 255, .4) 71px, #000 72px);
+}
+
+.pause {
+  animation-play-state: paused !important;
+}
+
+@keyframes roll {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes roll {
+  0% {
+    -webkit-transform: rotate(0);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes slideDown {
+  0% {
+    transform: translateY(-100vh);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@-webkit-keyframes slideDown {
+  0% {
+    -webkit-transform: translateY(-100vh);
+  }
+
+  100% {
+    -webkit-transform: translateY(0);
+  }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 1s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* @keyframes sim_trick_roll {
+  0% {
+    background-size: 100% 100%
+  }
+  50% {
+    background-size: 102% 102%
+  }100% {
+    background-size: 100% 100%
+  }
+}
+@-webkit-keyframes sim_trick_roll {
+ 0% {
+    background-size: 100% 100%
+  }
+  50% {
+    background-size: 102% 102%
+  }100% {
+    background-size: 100% 100%
+  }
+} */
