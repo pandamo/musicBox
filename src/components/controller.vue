@@ -1,16 +1,16 @@
 <template>
   <div :class="['controller', { 'mobileControll': isMobile }]">
     <audio ref="audioPlayer" :src="songSrc" :autoplay="autoplay" controls="" style='display:none'></audio>
-    <svgBtn :icoName='playWayIcon' @goPlay='play(playWayIcon)' class='smallIcon' />
-    <svgBtn icoName='prev' @goPlay='play("prev")' />
+    <svgBtn :icoName='playModeIcon' @goPlay='cyclePlayMode' class='smallIcon' />
+    <svgBtn icoName='prev' @goPlay='playPrevious' />
 
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" class='bigIcon' @click='play("play")'>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" class='bigIcon' @click='togglePlay'>
       <path v-show='!playing' fill="#fff" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 12v24l18-12-18-12z" />
       <path v-show='playing' fill="none" stroke="#fff" stroke-width="3" d="M18 14 v20 M30 14 v20" stroke-linecap="round" stroke-linejoin="round" />
       <circle cx="24" cy="24" r="22" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" opacity=".3" />
       <circle ref="progressCircle" cx="24" cy="24" r="22" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="0" style="transform:rotate(-90deg);transform-origin:center" stroke-dasharray='0 140' stroke-dashoffset='0' />
     </svg>
-    <svgBtn icoName='next' @goPlay='play("next")' />
+    <svgBtn icoName='next' @goPlay='playNext' />
     <svgBtn icoName='listIcon' class='smallIcon' @goPlay='toggleList' v-if='isMobile' />
     <div class="volumeBar">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class='speakerIcon' @click='toggleMute'>
@@ -28,16 +28,15 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import svgBtn from './svgBtn.vue'
-
-const MOBILE_REGEXP = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
+import { PLAY_MODES, STORAGE_KEYS, isMobileDevice } from '../constants/app.js'
 
 const props = defineProps({
   songId: {
     type: [String, Number],
     default: ''
   },
-  playWay: {
-    type: Object,
+  playMode: {
+    type: String,
     required: true
   },
   url: {
@@ -50,9 +49,9 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['play', 'canNotPlay', 'toggleList'])
+const emit = defineEmits(['togglePlay', 'next', 'prev', 'cyclePlayMode', 'playingChange', 'canNotPlay', 'toggleList'])
 
-const savedVolume = parseFloat(localStorage.getItem('volume'))
+const savedVolume = parseFloat(localStorage.getItem(STORAGE_KEYS.VOLUME))
 const initialVolume = Number.isNaN(savedVolume) ? 0.5 : savedVolume
 
 const autoplay = true
@@ -68,12 +67,14 @@ let keyboardListener = null
 let endedListener = null
 let playingListener = null
 let pauseListener = null
+let errorTimer = null
 
-const playWayIcon = computed(() => {
-  for (const key in props.playWay) {
-    if (props.playWay[key]) {
-      return key
-    }
+const playModeIcon = computed(() => {
+  if (props.playMode === PLAY_MODES.REPEAT_ONE) {
+    return 'repeatOne'
+  }
+  if (props.playMode === PLAY_MODES.RANDOM) {
+    return 'randomPlay'
   }
   return 'normalPlay'
 })
@@ -95,28 +96,43 @@ function getSongSrc(songId = props.songId) {
     : '//music.163.com/song/media/outer/url?id=' + songId + '.mp3'
 }
 
-function play(action) {
-  emit('play', action)
-  if (action === 'play') {
-    const willPlay = !!audioPlayer.value?.paused
-    if (audioPlayer.value?.paused) {
-      audioPlayer.value.play()
-    } else {
-      audioPlayer.value?.pause()
-    }
-    emit('play', willPlay)
-    playing.value = willPlay
+function togglePlay() {
+  if (audioPlayer.value?.paused) {
+    audioPlayer.value.play()
+  } else {
+    audioPlayer.value?.pause()
   }
+  emit('togglePlay')
+}
+
+function playPrevious() {
+  percent.value = 0
+  emit('prev')
+}
+
+function playNext() {
+  percent.value = 0
+  emit('next')
+}
+
+function cyclePlayMode() {
+  emit('cyclePlayMode')
 }
 
 function toggleList() {
   emit('toggleList')
 }
 
+function clearErrorTimer() {
+  clearTimeout(errorTimer)
+  errorTimer = null
+}
+
 function audioError() {
   emit('canNotPlay', '歌曲加载失败，自动播放下一首')
-  setTimeout(() => {
-    emit('play', 'next')
+  clearErrorTimer()
+  errorTimer = setTimeout(() => {
+    emit('next')
   }, 2000)
 }
 
@@ -164,21 +180,21 @@ function bindAudioEvents() {
   }
 
   endedListener = () => {
-    if (props.playWay.repeatOne) {
+    if (props.playMode === PLAY_MODES.REPEAT_ONE) {
       audioPlayer.value.play()
     } else {
-      emit('play', 'next')
+      emit('next')
     }
   }
   playingListener = () => {
     startProgressTimer()
-    emit('play', 'play')
     playing.value = true
+    emit('playingChange', true)
   }
   pauseListener = () => {
     clearProgressTimer()
-    emit('play', 'pause')
     playing.value = false
+    emit('playingChange', false)
   }
 
   audioPlayer.value.addEventListener('ended', endedListener)
@@ -202,7 +218,7 @@ function unbindAudioEvents() {
 }
 
 function bindKeyboardEvents() {
-  const shouldBindKeyboard = !(props.isMobile ?? MOBILE_REGEXP.test(navigator.userAgent))
+  const shouldBindKeyboard = !(props.isMobile ?? isMobileDevice())
   if (!shouldBindKeyboard) {
     return
   }
@@ -210,15 +226,13 @@ function bindKeyboardEvents() {
   keyboardListener = (e) => {
     switch (e.keyCode) {
       case 32:
-        play('play')
+        togglePlay()
         break
       case 39:
-        percent.value = 0
-        play('next')
+        playNext()
         break
       case 37:
-        percent.value = 0
-        play('prev')
+        playPrevious()
         break
       case 38:
         volume.value =
@@ -246,9 +260,9 @@ function unbindKeyboardEvents() {
 
 watch(() => props.songId, (val) => {
   syncSongSrc(val)
-  emit('play', true)
+  clearErrorTimer()
 
-  setTimeout(() => {
+  errorTimer = setTimeout(() => {
     if (audioPlayer.value?.error) {
       audioError()
     }
@@ -267,7 +281,7 @@ watch(volume, (val) => {
   if (val !== 0) {
     volumeTmp.value = val
   }
-  localStorage.setItem('volume', val)
+  localStorage.setItem(STORAGE_KEYS.VOLUME, val)
 })
 
 watch(percent, () => {
@@ -286,6 +300,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   clearProgressTimer()
+  clearErrorTimer()
   unbindAudioEvents()
   unbindKeyboardEvents()
 })
@@ -363,6 +378,7 @@ onBeforeUnmount(() => {
 .controller input[type="range"] {
   cursor: pointer;
   -webkit-appearance: none;
+  appearance: none;
   padding: 0;
   background: transparent;
   font: inherit;
@@ -374,6 +390,7 @@ onBeforeUnmount(() => {
 
 ::-webkit-slider-thumb {
   -webkit-appearance: none;
+  appearance: none;
   width: 15px;
   height: 15px;
   background-color: #fff;
@@ -383,6 +400,7 @@ onBeforeUnmount(() => {
 
 ::-webkit-slider-runnable-track {
   -webkit-appearance: none;
+  appearance: none;
   box-sizing: border-box;
   border: none;
   width: 100px;

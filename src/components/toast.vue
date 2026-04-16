@@ -1,8 +1,9 @@
 <template>
-  <div :class="[{'toast':!isMObile},{'hide':!show},{'mobileToast':isMObile}]" v-html='msg'></div>
+  <div :class="[{ 'toast': !isMobile }, { 'hide': !show }, { 'mobileToast': isMobile }]" v-html='msg'></div>
 </template>
 <script setup>
 import { onBeforeUnmount, ref, watch } from 'vue'
+import { isMobileDevice } from '../constants/app.js'
 
 const props = defineProps({
   msg: {
@@ -11,23 +12,29 @@ const props = defineProps({
   }
 })
 
-const isMObile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+const isMobile = isMobileDevice()
 const show = ref(false)
 let hideTimer = null
 
-watch(() => props.msg, (nVal) => {
-  if (!nVal) {
+function clearHideTimer() {
+  clearTimeout(hideTimer)
+  hideTimer = null
+}
+
+watch(() => props.msg, (nextMsg) => {
+  clearHideTimer()
+  if (!nextMsg) {
+    show.value = false
     return
   }
   show.value = true
-  clearTimeout(hideTimer)
   hideTimer = setTimeout(() => {
     show.value = false
   }, 2000)
 })
 
 onBeforeUnmount(() => {
-  clearTimeout(hideTimer)
+  clearHideTimer()
 })
 </script>
 <style>

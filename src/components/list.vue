@@ -5,7 +5,13 @@
     </svg>
     <div :class='[isMobile ? "mobileList" : "list", { "toggle": toggle }]' @click='toggleShow'>
       <ul class="playList">
-        <li v-for='song in sondList' :key='song.id' @click.stop='playThis(song.id)' :class='{ playing: songId == song.id }' :id="'s' + song.id">
+        <li
+          v-for='song in songList'
+          :key='song.id'
+          :ref='setSongItemRef(song.id)'
+          @click.stop='playThis(song.id)'
+          :class='{ playing: songId == song.id }'
+        >
           {{ song.name }} <small>{{ artists(song.artist) }}</small>
         </li>
       </ul>
@@ -13,12 +19,12 @@
   </div>
 </template>
 <script setup>
-import { nextTick, watch } from 'vue'
+import { nextTick, ref, watch } from 'vue'
 
 const props = defineProps({
-  sondList: {
+  songList: {
     type: Array,
-    default: () =>[]
+    default: () => []
   },
   songId: {
     type: [String, Number],
@@ -35,6 +41,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['toggleList', 'changeSong'])
+const songItemRefs = ref(new Map())
 
 function artists(artists) {
   if (artists) {
@@ -51,10 +58,20 @@ function playThis(id) {
   emit('changeSong', id)
 }
 
+function setSongItemRef(songId) {
+  return (element) => {
+    if (element) {
+      songItemRefs.value.set(songId, element)
+    } else {
+      songItemRefs.value.delete(songId)
+    }
+  }
+}
+
 function autoScroll() {
   nextTick(() => {
-    document
-      .getElementById('s' + props.songId)
+    songItemRefs.value
+      .get(props.songId)
       ?.scrollIntoView({ block: 'center', behavior: 'smooth' })
   })
 }
@@ -97,6 +114,7 @@ watch(() => props.toggle, (val) => {
 
 .list li {
   -webkit-user-select: none;
+  user-select: none;
   padding: 0;
   margin: 0;
   list-style: none;

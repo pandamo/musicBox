@@ -57,7 +57,7 @@
           <stop offset=".94" style="stop-color:#000" />
           <stop offset="1" style="stop-color:#333" />
         </linearGradient>
-        <circle cx="109.98" cy="63.37" r="35.92" fill="url(#vinylIndicator_h)" stroke="url(#vinylIndicator_i)" stroke-miterlimit="10" stroke-width="4" />
+        <circle cx="109.98" cy="63.37" r="35.92" fill="url(#vinylIndicator_h)" stroke="url(#vinylIndicator_i)" stroke-width="4" />
       </svg>
       <div :class="['cdBox', { 'cdSlideIn': loaded }]" @animationend="handleCdAnimationEnd">
         <div class="vinylBack" v-if='!cdStyle'></div>
@@ -94,7 +94,6 @@ const playerBack = ref({
   backgroundImage: ''
 })
 const loaded = ref(false)
-const songSrc = ref('')
 const cover = ref('')
 const indicatorPlaying = ref(false)
 const waitingForDrop = ref(false)
@@ -110,16 +109,25 @@ function syncIndicatorState() {
   indicatorPlaying.value = !!props.playing && !waitingForDrop.value
 }
 
-function handleCdAnimationEnd(event) {
-  if (event.animationName !== 'slideDown') {
-    return
-  }
+function finishLoadingState() {
   waitingForDrop.value = false
   syncIndicatorState()
 }
 
+function handleCdAnimationEnd(event) {
+  if (event.animationName !== 'slideDown') {
+    return
+  }
+  finishLoadingState()
+}
+
 function initRecodPlayer(songInfo) {
   if (!songInfo?.cover) {
+    loaded.value = false
+    waitingForDrop.value = false
+    indicatorPlaying.value = false
+    cover.value = ''
+    playerBack.value.backgroundImage = ''
     return
   }
   console.log('songInfo: ', songInfo)
@@ -129,13 +137,18 @@ function initRecodPlayer(songInfo) {
   const img = new Image()
   const src = songInfo.cover + '?param=800y800'
   img.src = src
-  songSrc.value = songInfo.url ? songInfo.url : '//music.163.com/song/media/outer/url?id=' + songInfo.id + '.mp3'
   img.onload = () => {
     setTimeout(() => {
       playerBack.value.backgroundImage = `url('${src}')`
       cover.value = src
       loaded.value = true
     }, 20)
+  }
+  img.onerror = () => {
+    playerBack.value.backgroundImage = ''
+    cover.value = ''
+    loaded.value = true
+    finishLoadingState()
   }
 }
 

@@ -2,7 +2,7 @@
   <div v-show='songInfo' class="mobilePLayer">
     <div class="cdStyle">
       <div :class="['blurCoverBack', { 'loaded': !loaded }]" :style="playerBack"></div>
-      <div class="cdBox" :style='moveStyle' @touchstart='touchStart' @touchmove='touchMove' @touchend='toucheEnd'>
+      <div class="cdBox" :style='moveStyle' @touchstart='touchStart' @touchmove='touchMove' @touchend='touchEnd'>
         <div class="cdLlight"></div>
         <div :class="[{ 'cdShadow': loaded }, { 'pause': !playing || touching }]"></div>
         <img :src='cover' :class="[{ 'cd': loaded }, { 'pause': !playing || touching }]" id='cd' />
@@ -39,7 +39,6 @@ const playerBack = ref({
   backgroundImage: ''
 })
 const loaded = ref(false)
-const songSrc = ref('')
 const touchStartX = ref(0)
 const endX = ref(0)
 const touching = ref(false)
@@ -73,19 +72,26 @@ const moveStyle = computed(() => {
 
 function initRecodPlayer(songInfo) {
   if (!songInfo?.cover) {
+    loaded.value = false
+    cover.value = ''
+    playerBack.value.backgroundImage = ''
     return
   }
   loaded.value = false
   const img = new Image()
   const src = songInfo.cover + '?param=400y400'
   img.src = src
-  songSrc.value = songInfo.url ? songInfo.url : '//music.163.com/song/media/outer/url?id=' + songInfo.id + '.mp3'
   img.onload = () => {
     loaded.value = true
     setTimeout(() => {
       playerBack.value.backgroundImage = `url('${src}')`
       cover.value = src
     }, 20)
+  }
+  img.onerror = () => {
+    playerBack.value.backgroundImage = ''
+    cover.value = ''
+    loaded.value = true
   }
 }
 
@@ -102,16 +108,19 @@ function touchMove(e) {
 
   if (endX.value > 120) {
     touchAction.value = 'prev'
-  }
-  if (endX.value < -120) {
+  } else if (endX.value < -120) {
     touchAction.value = 'next'
+  } else {
+    touchAction.value = ''
   }
 }
 
-function toucheEnd() {
+function touchEnd() {
   touching.value = false
   endX.value = 0
-  play(touchAction.value)
+  if (touchAction.value) {
+    play(touchAction.value)
+  }
 }
 
 function play(action) {
