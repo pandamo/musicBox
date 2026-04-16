@@ -62,7 +62,7 @@
       <div :class="['cdBox', { 'cdSlideIn': loaded }]" @animationend="handleCdAnimationEnd">
         <div class="vinylBack" v-if='!cdStyle'></div>
         <div :class="[{ 'cdShadow': loaded }, { 'pause': !playing }]"></div>
-        <div class="cdLlight"></div>
+        <div class="cdLlight" :class="!playing ? 'pause' : ''"></div>
         <img :src='cover' :class="['cd', { 'pause': !playing }]" />
       </div>
     </div>
