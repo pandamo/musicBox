@@ -1,5 +1,5 @@
 * {
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: transparent;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
@@ -96,7 +96,7 @@ a,
 button,
 input,
 textarea {
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: transparent;
 }
 
 p {
@@ -208,6 +208,7 @@ p {
   box-sizing: border-box;
   border: 40px solid rgba(0, 0, 0, .3);
   -webkit-mask: radial-gradient(transparent, transparent 16px, #000 19px);
+  mask: radial-gradient(transparent, transparent 16px, #000 19px);
 
 }
 
@@ -226,7 +227,11 @@ p {
 
 .vinylStyle .cdLlight {
   box-shadow: none;
-  background: linear-gradient(115deg, rgba(0, 0, 0, .6) 30%, transparent 50%, rgba(0, 0, 0, .6) 70%), linear-gradient(115deg, rgba(0, 0, 0, 0.4) 40%, transparent 50%, rgba(0, 0, 0, .4) 60%), repeating-radial-gradient(#000, rgba(200, 200, 200, .3) 1px, #000 3px), repeating-radial-gradient(#000, rgba(255, 255, 255, .1) 4px, #000 5px);
+  background:
+    /*  radial-gradient(ellipse at center, transparent 0, transparent 276px, rgba(255, 255, 255, .06) 276px, rgba(255, 255, 255, .06) 280px, transparent 280px, transparent 340px, rgba(255, 255, 255, .06) 340px, rgba(255, 255, 255, .06) 341px, transparent 344px, transparent 100%), */
+    linear-gradient(127deg, rgba(0, 0, 0, 1) 20%, transparent 50%, rgba(0, 0, 0, .8) 80%),
+    repeating-radial-gradient(#000, rgba(0, 0, 0, .5) 1px, #000 3px), repeating-radial-gradient(#000, rgba(255, 255, 255, .1) 2px, #000 3px),
+    conic-gradient(#000, #fff 10%, #000 20%, #000 50%, #fff 60%, #000 70%, #000 100%);
   background-size: 100% 100%, 100% 100%;
 }
 
@@ -243,13 +248,14 @@ p {
   border: none;
   width: 34px;
   height: 34px;
-  box-shadow: -2px 0px 15px rgba(0, 0, 0, .3) inset, -1px 0 0 rgba(255, 255, 255, .25), 0 0 0 rgba(255, 255, 255, .3) inset
+  box-shadow: -2px 0 15px rgba(0, 0, 0, .3) inset, -1px 0 0 rgba(255, 255, 255, .25), 0 0 0 rgba(255, 255, 255, .3) inset
 }
 
 .vinylStyle .cdShadow {
-  background-image: none;
-  box-shadow: -2px -1px 20px rgba(0, 0, 0, .8);
+  display: none;
 }
+
+
 
 .cdBox::after {
   content: '';
@@ -257,7 +263,7 @@ p {
   height: 72px;
   border-radius: 500px;
   -webkit-box-shadow: 0 0 20px rgba(0, 0, 0, .5) inset;
-  box-shadow: -2px 1px 15px rgba(0, 0, 0, .3) inset, -1px 0px 0px rgba(255, 255, 255, .25), 1px 0px 0px rgba(255, 255, 255, .3) inset;
+  box-shadow: -2px 1px 15px rgba(0, 0, 0, .3) inset, -1px 0 0 rgba(255, 255, 255, .25), 1px 0 0 rgba(255, 255, 255, .3) inset;
   position: absolute;
   border: 35px solid rgba(255, 255, 255, .1);
   z-index: 4;
@@ -301,8 +307,9 @@ p {
   box-shadow: 0 0 1px rgba(255, 255, 255, .2) inset;
   background: -moz-linear-gradient(-25deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0) 100%);
   background: -webkit-linear-gradient(-25deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0) 100%);
-  background: linear-gradient(115deg, rgba(255, 255, 255, 0) 0%,
-      rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0) 100%),
+  ;
+
   z-index: 2;
 }
 

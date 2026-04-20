@@ -2,7 +2,7 @@
   <div v-if='songInfo'>
     <div :class="[{ 'cdStyle': cdStyle }, { 'vinylStyle': !cdStyle }]">
       <div :class="['blurCoverBack', { 'loaded': !loaded }]" :style="playerBack"></div>
-      <svg v-if="!cdStyle" id="vinylIndicator" :class="indicatorPlaying ? 'playing' : ''" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" width="150" height="600" viewBox="0 0 150 600">
+      <svg ref="indicatorRef" v-if="!cdStyle" :style="indicatorStyle" id="vinylIndicator" :class="indicatorClass" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" width="150" height="600" viewBox="0 0 150 600">
         <filter id="vinylIndicator_e">
           <feGaussianBlur stdDeviation="4" />
         </filter>
@@ -64,6 +64,7 @@
         <div :class="[{ 'cdShadow': loaded }, { 'pause': !playing }]"></div>
         <div class="cdLlight" :class="!playing ? 'pause' : ''"></div>
         <img :src='cover' :class="['cd', { 'pause': !playing }]" />
+        <div class="recordShadow"></div>
       </div>
     </div>
     <div class="songInfo">
@@ -73,7 +74,7 @@
   </div>
 </template>
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
 
 const props = defineProps({
   songInfo: {
@@ -97,6 +98,10 @@ const loaded = ref(false)
 const cover = ref('')
 const indicatorPlaying = ref(false)
 const waitingForDrop = ref(false)
+const indicatorResetting = ref(false)
+const indicatorRef = ref(null)
+const indicatorCurrentRotate = ref(0)
+let indicatorResetTimer = null
 
 const artists = computed(() => {
   if (props.songInfo.artist) {
@@ -105,8 +110,60 @@ const artists = computed(() => {
   return ''
 })
 
+const indicatorStyle = computed(() => ({
+  '--sound-duration': `${props.songInfo?.length / 1000 || 240}s`,
+  '--indicator-current-rotate': `${indicatorCurrentRotate.value}deg`
+}))
+
+const indicatorClass = computed(() => ({
+  playing: indicatorPlaying.value,
+  resetting: indicatorResetting.value
+}))
+
+function clearIndicatorResetTimer() {
+  if (indicatorResetTimer) {
+    clearTimeout(indicatorResetTimer)
+    indicatorResetTimer = null
+  }
+}
+
+function updateIndicatorCurrentRotate() {
+  if (!indicatorRef.value) {
+    indicatorCurrentRotate.value = 0
+    return
+  }
+  const transform = window.getComputedStyle(indicatorRef.value).transform
+  if (!transform || transform === 'none') {
+    indicatorCurrentRotate.value = 0
+    return
+  }
+  const matrix = new DOMMatrix(transform)
+  const angle = Math.atan2(matrix.b, matrix.a) * (180 / Math.PI)
+  indicatorCurrentRotate.value = Math.max(0, angle)
+}
+
+function startIndicatorReset() {
+  clearIndicatorResetTimer()
+  updateIndicatorCurrentRotate()
+  indicatorResetting.value = true
+  indicatorPlaying.value = false
+  indicatorResetTimer = setTimeout(() => {
+    indicatorResetting.value = false
+    indicatorCurrentRotate.value = 0
+    indicatorResetTimer = null
+    syncIndicatorState()
+  }, 600)
+}
+
+function pauseIndicator() {
+  if (!indicatorPlaying.value) {
+    return
+  }
+  startIndicatorReset()
+}
+
 function syncIndicatorState() {
-  indicatorPlaying.value = !!props.playing && !waitingForDrop.value
+  indicatorPlaying.value = !!props.playing && !waitingForDrop.value && !indicatorResetting.value
 }
 
 function finishLoadingState() {
@@ -123,6 +180,8 @@ function handleCdAnimationEnd(event) {
 
 function initRecodPlayer(songInfo) {
   if (!songInfo?.cover) {
+    clearIndicatorResetTimer()
+    indicatorResetting.value = false
     loaded.value = false
     waitingForDrop.value = false
     indicatorPlaying.value = false
@@ -152,11 +211,22 @@ function initRecodPlayer(songInfo) {
   }
 }
 
-watch(() => props.songInfo, (value) => {
+onBeforeUnmount(() => {
+  clearIndicatorResetTimer()
+})
+
+watch(() => props.songInfo, (value, oldValue) => {
+  if (oldValue?.id && value?.id && oldValue.id !== value.id) {
+    startIndicatorReset()
+  }
   initRecodPlayer(value)
 }, { immediate: true })
 
-watch(() => props.playing, () => {
+watch(() => props.playing, (value, oldValue) => {
+  if (oldValue && !value) {
+    pauseIndicator()
+    return
+  }
   syncIndicatorState()
 })
 </script>
@@ -167,12 +237,56 @@ watch(() => props.playing, () => {
   z-index: 9;
   margin-left: 330px;
   top: 35px;
-  transition: transform .6s ease-in-out;
+  background: none;
+  transform: rotate(0deg);
   transform-origin: 75% 11%;
 }
 
+#vinylIndicator.resetting {
+  animation: vinylReturn .6s ease-in-out forwards;
+}
+
 #vinylIndicator.playing {
-  transform: rotate(20deg);
-  background: none;
+  animation: vinylRoll var(--sound-duration, 240s) linear infinite;
+}
+
+@keyframes vinylRoll {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  0.2% {
+    transform: rotate(25deg);
+  }
+
+  100% {
+    transform: rotate(9deg);
+  }
+}
+
+@keyframes vinylReturn {
+  0% {
+    transform: rotate(var(--indicator-current-rotate, 9deg));
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.vinylStyle .recordShadow {
+  width: 800px;
+  height: 800px;
+  border: 5px solid rgba(0, 0, 0, .5);
+}
+
+.recordShadow {
+  width: 500px;
+  height: 500px;
+  filter: drop-shadow(2px 4px 22px #000);
+  border-radius: 50%;
+  z-index: 99999;
+
+  box-shadow: 0 5px 20px rgba(0, 0, 0, .6);
 }
 </style>
